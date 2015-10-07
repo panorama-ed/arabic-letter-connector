@@ -17,10 +17,10 @@ module ArabicLetterConnector
       @connects = connects
     end
 
+    # @return [Boolean] can the character connect with the next character
     def connects?
       @connects
     end
-
   end
 
   # Determine the form of the current character (:isolated, :initial, :medial,
@@ -169,6 +169,24 @@ module ArabicLetterConnector
     add("0629", "fe93", "fe94", "fe93", "fe94", false) # Ta2 Marbu6a
     add("0640", "0640", "0640", "0640", "0640", true)  # Tatweel
     add("0649", "feef", "fef0", "feef", "fef0", false) # Alef Layyina
+
+    # Prevent words from breaking on diacritics by marking the diacritics as
+    # connected
+    #
+    # List of Diacritics pulled from http://unicode.org/charts/PDF/U0600.pdf
+    # under the heading "Tashkil from ISO 8859-6"
+    [
+      "064b", # FATHATAN
+      "064c", # DAMMATAN
+      "064D", # KASRATAN
+      "064E", # FATHA
+      "064F", # DAMMA
+      "0650", # KASRA
+      "0651", # SHADDA
+      "0652"  # SUKUN
+    ].each do |codepoint|
+      add(codepoint, codepoint, codepoint, codepoint, codepoint, true)
+    end
 
     # The common codes for these four Lam-Alef characters are in the
     # Arabic Presentation Forms-B block (rather than the regular Arabic block),
